@@ -3,12 +3,13 @@ import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import React from 'react'
 import { MenuList } from '@/constant/data'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { Progress } from '@/components/ui/progress'
 import Link from 'next/link'
 export default function SideBar() {
 
     const path = usePathname();
+    const router = useRouter();
     return (
         <div className='h-screen shadow-md p-5'>
             <div className='flex items-center gap-2'>
@@ -16,7 +17,9 @@ export default function SideBar() {
                 <h2 className='font-bold text-2xl'>PrepStudio AI</h2>
             </div>
             <div className='mt-10'>
-                <Button className='w-full'>Create New</Button>
+                <Button
+                onClick={()=>router.push('/create')}
+                 className='w-full'>Create New</Button>
                 <div className='mt-10 flex flex-col gap-5'>
                     {
                         MenuList.map((item, index) => (
