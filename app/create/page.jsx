@@ -21,7 +21,6 @@ export default function Create() {
             ...formData,
             [fieldName]: fieldValue
         })
-        console.log(formData)
     }
 
     // used to save user input and generate ai course layout
