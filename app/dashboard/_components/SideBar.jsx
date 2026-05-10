@@ -19,7 +19,7 @@ export default function SideBar() {
             <div className='mt-10'>
                 <Button
                 onClick={()=>router.push('/create')}
-                 className='w-full'>Create New</Button>
+                 className='w-full cursor-pointer'>Create New</Button>
                 <div className='mt-10 flex flex-col gap-5'>
                     {
                         MenuList.map((item, index) => (
