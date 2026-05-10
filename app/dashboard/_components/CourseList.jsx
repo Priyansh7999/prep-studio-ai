@@ -5,11 +5,13 @@ import { useState, useEffect, useContext } from "react";
 import CourseCardItem from "./CourseCardItem";
 import { Button } from "@/components/ui/button";
 import { RefreshCw } from "lucide-react";
+import { CourseCountContext } from "@/app/_context/CourseCountContext";
 
 function CourseList() {
   const { user, isLoaded } = useUser();
   const [courseList, setCourseList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const {totalCourse, setTotalCourse} = useContext(CourseCountContext);
 
   useEffect(() => {
     if (isLoaded && user) {
@@ -26,6 +28,7 @@ function CourseList() {
         createdBy: user.primaryEmailAddress.emailAddress,
       });
       setCourseList(result.data.result || []);
+      setTotalCourse(result.data.result?.length);
     } catch (error) {
       console.error("Error fetching course list:", error);
     } finally {

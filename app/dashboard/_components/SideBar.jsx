@@ -4,8 +4,7 @@ import Image from 'next/image'
 import React from 'react'
 import { MenuList } from '@/constant/data'
 import { usePathname, useRouter } from 'next/navigation'
-import { Progress } from '@/components/ui/progress'
-import Link from 'next/link'
+import CreditScore from './CreditScore'
 export default function SideBar() {
 
     const path = usePathname();
@@ -34,12 +33,7 @@ export default function SideBar() {
                 </div>
             </div>
 
-            <div className=' border p-2 bg-slate-100 rounded-lg absolute bottom-5 w-[87%]'>
-                <h2 className='mb-2 text-lg'>Available Credits : 5</h2>
-                <Progress value={30} />
-                <h2 className='text-sm'>1 out of 5 Credits Used</h2>
-                <Link href={'/dashboard/upgrade'} className='text-blue-600 text-xs mt-3'>Upgrade to create more</Link>
-            </div>
+           <CreditScore />
         </div>
     )
 }
