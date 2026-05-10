@@ -48,7 +48,6 @@ const StudyMaterialSection = ({ courseId, course }) => {
         courseId: courseId,
         studyType: "ALL",
       });
-      console.log("Study material content:", result?.data);
       setStudyTypeContent(result?.data);
     } catch (error) {
       console.error("Error fetching study material:", error);
@@ -59,14 +58,14 @@ const StudyMaterialSection = ({ courseId, course }) => {
     <div className="mt-5">
       <h2 className="font-medium text-2xl">Study Material</h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-5 mt-3">
-        {MaterialList.map((item, index) => (
-          <Link href={'/course/' + courseId + item.path} key={index}>
-            <MaterialCardItem
-              key={index}
-              item={item}
-              studyTypeContent={studyTypeContent}
-            />
-          </Link>
+       {MaterialList.map((item, index) => (
+          <MaterialCardItem
+            key={index}
+            item={item}
+            studyTypeContent={studyTypeContent}
+            course={course}
+            refreshData={GetStudyMaterial}
+          />
         ))}
       </div>
     </div>
