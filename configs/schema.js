@@ -6,6 +6,7 @@ export const USER_TABLE = pgTable("users", {
     name: varchar("user_name", { length: 255 }).notNull(),
     email:varchar().notNull(),
     isMember: boolean().default(false).notNull(),
+    customerId:varchar(),
 });
 
 export const STUDY_MATERIAL_TABLE = pgTable("studyMaterial", {
