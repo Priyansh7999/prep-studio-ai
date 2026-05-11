@@ -1,5 +1,6 @@
 import { db } from "@/configs/db";
 import { STUDY_TYPE_CONTENT_TABLE } from "@/configs/schema";
+import { and, eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { generateStudyTypeContent } from "@/lib/generateNotes";
 
@@ -9,20 +10,27 @@ export async function POST(req) {
 
         let PROMPT = "";
 
+        const randomSeed = Math.floor(Math.random() * 100000);
+
         if (type === "Flashcard") {
             PROMPT = `
-Generate 10 flashcards for the following topics:
+Generate 10 NEW and UNIQUE flashcards for the following topics:
 
 ${chapters}
 
-IMPORTANT RULES:
+IMPORTANT:
+- Do NOT repeat previous flashcards
+- Use different wording every time
+- Use different examples and explanations
+- Include conceptual, theoretical, and practical questions
+- Mix easy, medium, and hard level questions
+- Random Seed: ${randomSeed}
+
+RULES:
 - Return ONLY valid JSON
 - Do NOT use markdown
-- Do NOT use \`\`\`
-- Do NOT add explanation
-- Do NOT add text before or after JSON
-- All property names and string values must use double quotes
-- Escape special characters properly
+- Do NOT add explanation text
+- Use double quotes only
 
 Output format:
 [
@@ -33,45 +41,62 @@ Output format:
 ]
 `;
         }
+
+
         if (type === "Quiz") {
             PROMPT = `
-Generate a quiz for the following topics:
+Generate 10 NEW and DIFFERENT quiz questions for the following topics:
 
 ${chapters}
 
-IMPORTANT RULES:
+IMPORTANT:
+- Do NOT repeat old quiz questions
+- Use different wording and examples
+- Include conceptual and application-based questions
+- Mix easy, medium, and hard questions
+- Each question should have 4 options
+- Random Seed: ${randomSeed}
+
+RULES:
 - Return ONLY valid JSON
 - Do NOT use markdown
-- Do NOT use \`\`\`
-- Do NOT add explanation
-- Do NOT add text before or after JSON
-- All property names and string values must use double quotes
-- Escape special characters properly
+- Do NOT add explanation text
+- Use double quotes only
 
 Output format:
 [
   {
     "question": "Question here",
-    "options": ["Option 1", "Option 2", "Option 3", "Option 4"],
-    "answer": "Answer here"
+    "options": [
+      "Option 1",
+      "Option 2",
+      "Option 3",
+      "Option 4"
+    ],
+    "answer": "Correct Answer"
   }
 ]
 `;
         }
+
         if (type === "QA") {
             PROMPT = `
-Generate 10 questions and answers for the following topics:
+Generate 10 NEW and UNIQUE questions and answers for the following topics:
 
 ${chapters}
 
-IMPORTANT RULES:
+IMPORTANT:
+- Do NOT repeat previous questions
+- Use different explanations and examples
+- Include theoretical and practical questions
+- Mix easy, medium, and hard questions
+- Random Seed: ${randomSeed}
+
+RULES:
 - Return ONLY valid JSON
 - Do NOT use markdown
-- Do NOT use \`\`\`
-- Do NOT add explanation
-- Do NOT add text before or after JSON
-- All property names and string values must use double quotes
-- Escape special characters properly
+- Do NOT add explanation text
+- Use double quotes only
 
 Output format:
 [
@@ -83,6 +108,14 @@ Output format:
 `;
         }
 
+        await db
+            .delete(STUDY_TYPE_CONTENT_TABLE)
+            .where(
+                and(
+                    eq(STUDY_TYPE_CONTENT_TABLE.courseId, courseId),
+                    eq(STUDY_TYPE_CONTENT_TABLE.type, type)
+                )
+            );
 
         const result = await db
             .insert(STUDY_TYPE_CONTENT_TABLE)
@@ -95,6 +128,7 @@ Output format:
                 id: STUDY_TYPE_CONTENT_TABLE.id,
             });
 
+
         await generateStudyTypeContent({
             studyType: type,
             prompt: PROMPT,
@@ -104,15 +138,20 @@ Output format:
 
         return NextResponse.json({
             success: true,
-            message: "Content generation started",
+            message: `${type} regenerated successfully`,
         });
 
     } catch (error) {
         console.log(error);
 
         return NextResponse.json(
-            { success: false, error: error.message },
-            { status: 500 }
+            {
+                success: false,
+                error: error.message,
+            },
+            {
+                status: 500,
+            }
         );
     }
 }

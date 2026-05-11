@@ -8,7 +8,7 @@ import React from "react";
 function CourseCardItem({ course }) {
   return (
     <div className="border rounded-lg shadow-md p-5">
-      <div>
+      <div className="h-full flex flex-col justify-between">
         <div className="flex  justify-between items-center">
           <Image src={"/knowledge.png"} alt="other" width={50} height={50} />
           <h2 className="text-[10px] p-1 px-2 rounded-full bg-blue-600 text-white">
@@ -21,17 +21,12 @@ function CourseCardItem({ course }) {
         <p className="text-sm line-clamp-2 text-gray-500 mt-3">
           {course?.courseLayout?.summary}
         </p>
-
-        <div className="mt-4">
-          <Progress value={0} />
-        </div>
-
-        <div className="mt-6 flex justify-end items-baseline">
+        <div className="mt-6 flex justify-end items-baseliner">
           {course?.status == "Generating" ? (
             <Button disabled>Generating...</Button>
           ) : (
             <Link href={"/course/" + course?.courseId}>
-              <Button>View</Button>
+              <Button className="cursor-pointe">View</Button>
             </Link>
           )}
         </div>
