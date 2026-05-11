@@ -1,29 +1,18 @@
 "use client";
-
-import { Button } from "@/components/ui/button";
-import { UserButton, useUser } from "@clerk/nextjs";
-import Link from "next/link";
+import Navbar from "./_components/home/Navbar";
+import HeroSection from "./_components/home/HeroSection";
+import FeaturesSection from "./_components/home/FeaturesSection";
+import Footer from "./_components/home/Footer";
+import { useUser } from "@clerk/nextjs";
 
 export default function Home() {
   const { user } = useUser();
-
   return (
-    <div className="flex flex-col items-center justify-center h-screen gap-4">
-      <h2 className="text-2xl font-semibold">
-        Welcome to <span className="text-primary">PrepStudio AI</span>
-      </h2>
-
-      {!user ? (
-        <Link href="/sign-in">
-          <Button>Login</Button>
-        </Link>
-      ) : (
-        <>
-          <Link href="/dashboard">
-            <Button>Dashboard</Button>
-          </Link>
-        </>
-      )}
+    <div className="min-h-screen bg-white">
+      <Navbar user={user} />
+      <HeroSection user={user} />
+      <FeaturesSection user={user} />
+      <Footer />
     </div>
   );
 }
