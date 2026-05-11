@@ -4,7 +4,6 @@ import Image from 'next/image'
 import React from 'react'
 import { MenuList } from '@/constant/data'
 import { usePathname, useRouter } from 'next/navigation'
-import CreditScore from './CreditScore'
 export default function SideBar() {
 
     const path = usePathname();
@@ -32,8 +31,6 @@ export default function SideBar() {
                     }
                 </div>
             </div>
-
-           <CreditScore />
         </div>
     )
 }

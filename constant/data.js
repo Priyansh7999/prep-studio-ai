@@ -5,16 +5,6 @@ export const MenuList = [
         name: 'Dashboard',
         path: '/dashboard',
         icon: LayoutDashboard
-    },
-    {
-        name: 'Upgrade',
-        path: '/dashboard/upgrade',
-        icon: Shield
-    },
-    {
-        name: 'Profile',
-        path: '/dashboard/profile',
-        icon: UserCircle
     }
 ]
 
